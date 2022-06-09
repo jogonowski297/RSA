@@ -137,7 +137,7 @@ def gen_key(n_stepik):
 
 
 if __name__ == "__main__":
-    zaszyfrowane = get_from_file_encode("zaszyfrowane")
+    zaszyfrowane = get_from_file_encode("zaszyfrowane.txt")
     odszyfrowane = get_from_file_decode("odszyfrowane.txt")
     stala_do_blokow = pow(2, 8)
     dlugosc_klucza = 12
