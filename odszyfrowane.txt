@@ -1,0 +1,5 @@
+The RSA algorithm allows to create a pair of keys: a public key and a private key.
+Everyone can receive the public key and use it to encrypt a message.
+Only the owner of the private key would be able to decrypt that message.
+Similarly, the owner of the private key can encrypt some data by using it, thus allowing everyone else to use the corresponding public key to decrypt the data.
+RSA security is based on the practical difficulty of factoring the product of two large prime numbers (this is so called the factoring problem).

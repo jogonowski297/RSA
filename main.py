@@ -1,6 +1,19 @@
 from Key import Key
 from Rsa import Rsa
 
+def get_from_file_encode(file):
+    tab = []
+    with open(file, 'r') as f:
+        rsa = f.read()
+    for i in rsa.split(' '):
+        tab.append([int(i)])
+    return tab
+
+def get_from_file_decode(file):
+    with open(file, 'r', encoding="utf-8") as f:
+        rsa = f.read()
+    return rsa
+
 
 def gen_key(n_stepik):
     def find_d(x, y):
@@ -34,25 +47,32 @@ def gen_key(n_stepik):
 
 
 if __name__ == "__main__":
-    dlugosc_klucza = 15
-    stala_do_blokow = 8
-    dlugosc_bloku = int(input("Podaj długość bloku: "))
+    zaszyfrowane = get_from_file_encode("zaszyfrowane")
+    odszyfrowane = get_from_file_decode("odszyfrowane.txt")
+    stala_do_blokow = pow(2, 8)
+    dlugosc_klucza = 12
     # dlugosc_bloku = 1
-    text = 'Ala ma kota a kot ma ale'
-
+    dlugosc_bloku = int(input("Podaj dlugosc bloku: "))
     e, d, n = gen_key(dlugosc_klucza)
-    print(e,n)
+    rsa = Rsa(stala_do_blokow, dlugosc_bloku)
 
-    rsa = Rsa(stala_do_blokow)
-    lista = rsa.convert_text_to_list(text,dlugosc_bloku)
+    chose = input("Co chcesz zrobic?\n"
+                  "1) Odszyfrowac z pliku 'zaszyfrowane.txt'\n"
+                  "2) Zaszyfrowac z pliku 'odszyfrowane.txt'\n"
+                  "3) Zapisz wygenerowane klucze do pliku 'rsa_key.txt'")
 
-    encode, encode_txt = rsa.encode(e, n, lista)
-    decode, decode_txt = rsa.decode(d, n, encode)
+    if chose == '1':
+        decode, decode_txt = rsa.decode(d, n, zaszyfrowane)
+        print("Odszyfrowana wiadomość: ")
+        for i in decode:
+            print(rsa.inttostring(i[0]).encode("utf-8").decode(), end='')
+    elif chose == '2':
+        lista = rsa.convert_text_to_list(odszyfrowane, dlugosc_bloku)
+        encode, encode_txt = rsa.encode(e, n, lista)
+        print("Zaszyfrowana wiadomość:")
+        print(encode_txt)
+    elif chose == '3':
+        with open("rsa_key.txt", 'w') as f:
+            f.write(f'Klucz publiczny: ({e}, {n})\n'
+                    f'Klucz prywatny: ({d}, {n})')
 
-    with open('dane.txt', 'w') as f:
-        f.write(f'Klucz publiczny: ({e},{n})\n'
-                f'Klucz prywatny: ({d},{n})\n\n'
-                f'Oryginalna wiadomosc: {text}\n'
-                f'Dlugosc blokow: {dlugosc_bloku}\n'
-                f'Zaszyfrowana wiadomosc: {encode_txt}\n'
-                f'Odszyfrowana wiadomosc: {decode_txt}')

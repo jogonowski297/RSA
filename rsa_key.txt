@@ -1,0 +1,2 @@
+Klucz publiczny: (2543, 13467607)
+Klucz prywatny: (6515759, 13467607)
